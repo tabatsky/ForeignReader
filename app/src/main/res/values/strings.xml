@@ -5,4 +5,7 @@
         <item>English</item>
         <item>Deutsch</item>
     </string-array>
+
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>

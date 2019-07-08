@@ -9,8 +9,11 @@ import java.util.*
 import android.widget.Toast
 import com.obsez.android.lib.filechooser.ChooserDialog
 import android.os.Environment
+import android.os.PersistableBundle
+import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Gravity
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
@@ -26,6 +29,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var rvAdapter: RVAdapter
     private lateinit var contentsAdapter: ContentsAdapter
+    private lateinit var drawerToggle: ActionBarDrawerToggle
+
     val rvLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     val contentsLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
@@ -33,6 +38,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        initDrawer()
         initRV()
         initContents()
         loadCurrentPath()
@@ -69,6 +75,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onPostCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+        super.onPostCreate(savedInstanceState, persistentState)
+        drawerToggle.syncState()
+    }
+
     fun tryReadFile() {
         try {
             readFile(currentPath!!)
@@ -82,6 +93,17 @@ class MainActivity : AppCompatActivity() {
             sc.close()
             rvAdapter.setTxtList(txtList)
         }
+    }
+
+    fun initDrawer() {
+        setSupportActionBar(toolbar)
+        //supportActionBar?.setDisplayShowTitleEnabled(true)
+        //supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        drawerToggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.open, R.string.close)
+        //drawerToggle.setHomeAsUpIndicator(R.drawable.ic_menu)
+        drawerToggle.syncState()
+        drawer_layout.addDrawerListener(drawerToggle)
     }
 
     fun initRV() {
@@ -106,6 +128,7 @@ class MainActivity : AppCompatActivity() {
         contentsAdapter.onChapterClickListener = object : ContentsAdapter.OnChapterClickListener {
             override fun onChapterClick(chapter: Chapter) {
                 rvLayoutManager.scrollToPositionWithOffset(chapter.line, 0)
+                drawer_layout.closeDrawer(Gravity.START)
             }
         }
         rv_contents.apply {
