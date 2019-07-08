@@ -75,11 +75,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onPostCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onPostCreate(savedInstanceState, persistentState)
-        drawerToggle.syncState()
-    }
-
     fun tryReadFile() {
         try {
             readFile(currentPath!!)
