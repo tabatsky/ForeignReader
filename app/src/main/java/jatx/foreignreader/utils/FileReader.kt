@@ -1,28 +1,30 @@
-package jatx.foreignreader
+package jatx.foreignreader.utils
 
 import android.util.Log
-import com.kursx.parser.fb2.Element
 import com.kursx.parser.fb2.FictionBook
 import com.kursx.parser.fb2.Section
+import jatx.foreignreader.models.Chapter
+import jatx.foreignreader.models.Paragraph
+import jatx.foreignreader.models.ParagraphType
 import java.io.File
 import java.io.FileInputStream
 import java.util.*
 
-fun readTxtFile(path: String): List<Line> {
-    val txtList = arrayListOf<Line>()
+fun readTxtFile(path: String): List<Paragraph> {
+    val txtList = arrayListOf<Paragraph>()
     val fileInputStream = FileInputStream(path)
     val sc = Scanner(fileInputStream)
     while (sc.hasNextLine()) {
-        val line = Line(sc.nextLine(), LineType.PARAGRAPH)
+        val line = Paragraph(sc.nextLine(), ParagraphType.TEXT)
         txtList.add(line)
     }
     sc.close()
     return txtList
 }
 
-fun readFb2File(path: String): Pair<List<Line>, List<Chapter>> {
+fun readFb2File(path: String): Pair<List<Paragraph>, List<Chapter>> {
     var lastLine = arrayOf(0)
-    val txtList = arrayListOf<Line>()
+    val txtList = arrayListOf<Paragraph>()
     val chapterList = arrayListOf<Chapter>()
     val fb2 = FictionBook(File(path))
     fb2.body.sections.forEach { section ->
@@ -33,18 +35,18 @@ fun readFb2File(path: String): Pair<List<Line>, List<Chapter>> {
     return txtList to chapterList
 }
 
-private fun readSection(section: Section, lastLine: Array<Int>): Pair<List<Line>, List<Chapter>> {
-    val txtList = arrayListOf<Line>()
+private fun readSection(section: Section, lastLine: Array<Int>): Pair<List<Paragraph>, List<Chapter>> {
+    val txtList = arrayListOf<Paragraph>()
     val chapterList = arrayListOf<Chapter>()
     val title = section.getTitleString(": ", ".")
     if (!title.trim().isEmpty()) {
-        txtList.add(Line(title, LineType.TITLE))
-        Log.e("line ${lastLine[0]}", title)
+        txtList.add(Paragraph(title, ParagraphType.TITLE))
+        Log.e("position ${lastLine[0]}", title)
         chapterList.add(Chapter(lastLine[0], title))
         lastLine[0]++
     }
     section.elements.forEach { elem ->
-        val line = Line(elem.text, LineType.PARAGRAPH)
+        val line = Paragraph(elem.text, ParagraphType.TEXT)
         txtList.add(line)
         lastLine[0]++
     }

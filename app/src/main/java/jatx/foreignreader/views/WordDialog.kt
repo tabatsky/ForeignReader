@@ -1,4 +1,4 @@
-package jatx.foreignreader
+package jatx.foreignreader.views
 
 import android.content.Context
 import android.content.DialogInterface

@@ -1,4 +1,4 @@
-package jatx.foreignreader
+package jatx.clickablewordstextview
 
 import android.content.Context
 import android.graphics.Color
@@ -10,7 +10,6 @@ import android.text.style.ClickableSpan
 import android.util.AttributeSet
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 
 class ClickableWordsTextView(context: Context, attrs: AttributeSet?, defStyleAttr: Int):
     TextView(context, attrs, defStyleAttr) {

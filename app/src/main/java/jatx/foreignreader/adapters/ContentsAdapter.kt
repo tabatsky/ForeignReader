@@ -1,11 +1,12 @@
-package jatx.foreignreader
+package jatx.foreignreader.adapters
 
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import jatx.foreignreader.R
+import jatx.foreignreader.models.Chapter
 
 class ContentsAdapter: RecyclerView.Adapter<ContentsAdapter.VH>() {
     interface OnChapterClickListener {

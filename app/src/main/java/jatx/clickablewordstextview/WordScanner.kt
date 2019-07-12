@@ -1,20 +1,14 @@
-package jatx.foreignreader
+package jatx.clickablewordstextview
 
 import java.lang.StringBuilder
 
-class WordScanner(text: String) {
-    val text: String
+class WordScanner(val text: String) {
     private var currentIndex: Int = 0
 
-    val deutschLetters = listOf('Ä', 'ä', 'Ö', 'ö', 'ẞ', 'ß', 'Ü', 'ü')
-    val englishSymbols = listOf('\'')
-
-    init {
-        this.text = text
-    }
+    private val extraSymbols = listOf('Ä', 'ä', 'Ö', 'ö', 'ẞ', 'ß', 'Ü', 'ü', '\'')
 
     fun isLetter(ch: Char): Boolean {
-        return (ch in 'A'..'Z') || (ch in 'a'..'z') || (ch in deutschLetters) || (ch in englishSymbols)
+        return (ch in 'A'..'Z') || (ch in 'a'..'z') || (ch in extraSymbols)
     }
 
     fun scanNextWord(): Word? {
