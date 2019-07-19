@@ -22,9 +22,9 @@ import jatx.yandexdictionaryclient.YandexDictionaryClient
 
 class ParagraphsAdapter: RecyclerView.Adapter<ParagraphsAdapter.VH>() {
     companion object {
-        val DIRECTION_EN_RU = "en-ru"
-        val DIRECTION_DE_RU = "de-ru"
-        var DIRECTION = DIRECTION_EN_RU
+        const val DIRECTION_EN_RU = "en-ru"
+        const val DIRECTION_DE_RU = "de-ru"
+        var direction = DIRECTION_EN_RU
     }
 
     private val paragraphList = arrayListOf<Paragraph>()
@@ -46,8 +46,8 @@ class ParagraphsAdapter: RecyclerView.Adapter<ParagraphsAdapter.VH>() {
     override fun onBindViewHolder(holder: VH, position: Int) {
         holder.tvForeign.text = paragraphList[position].text
         when (paragraphList[position].type) {
-            ParagraphType.TITLE -> holder.tvForeign.setTypeface(Typeface.DEFAULT_BOLD)
-            ParagraphType.TEXT -> holder.tvForeign.setTypeface(Typeface.DEFAULT)
+            ParagraphType.TITLE -> holder.tvForeign.typeface = Typeface.DEFAULT_BOLD
+            ParagraphType.TEXT -> holder.tvForeign.typeface = Typeface.DEFAULT
         }
     }
 
@@ -64,12 +64,8 @@ class ParagraphsAdapter: RecyclerView.Adapter<ParagraphsAdapter.VH>() {
     }
 
     class VH(v: View): RecyclerView.ViewHolder(v) {
-        val tvForeign: ClickableWordsTextView
-        var clickEventDisposable: Disposable? = null
-
-        init {
-            tvForeign = v.findViewById(R.id.tv_foreign)
-        }
+        val tvForeign: ClickableWordsTextView = v.findViewById(R.id.tv_foreign)
+        private var clickEventDisposable: Disposable? = null
 
         fun onAttach() {
             val clickEventObservable = Observable.create(object : ObservableOnSubscribe<Word> {
@@ -87,7 +83,7 @@ class ParagraphsAdapter: RecyclerView.Adapter<ParagraphsAdapter.VH>() {
                 .subscribeOn(Schedulers.io())
                 .flatMap { word -> Observable
                     .fromCallable{YandexDictionaryClient.getInstance().lookup(word.text,
-                        DIRECTION
+                        direction
                     )}
                     .subscribeOn(Schedulers.io())}
                 .observeOn(AndroidSchedulers.mainThread())
@@ -103,7 +99,7 @@ class ParagraphsAdapter: RecyclerView.Adapter<ParagraphsAdapter.VH>() {
         }
 
         fun onDetach() {
-            if (!(clickEventDisposable?.isDisposed ?: true)) clickEventDisposable?.dispose()
+            if (clickEventDisposable?.isDisposed != true) clickEventDisposable?.dispose()
         }
     }
 }

@@ -2,6 +2,7 @@ package jatx.clickablewordstextview
 
 import android.content.Context
 import android.graphics.Color
+import android.support.v7.widget.AppCompatTextView
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextPaint
@@ -9,10 +10,9 @@ import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.util.AttributeSet
 import android.view.View
-import android.widget.TextView
 
 class ClickableWordsTextView(context: Context, attrs: AttributeSet?, defStyleAttr: Int):
-    TextView(context, attrs, defStyleAttr) {
+    AppCompatTextView(context, attrs, defStyleAttr) {
     private var txt: CharSequence? = null
     var onWordClickListener: OnWordClickListener? = null
 

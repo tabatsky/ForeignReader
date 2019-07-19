@@ -23,7 +23,7 @@ fun readTxtFile(path: String): List<Paragraph> {
 }
 
 fun readFb2File(path: String): Pair<List<Paragraph>, List<Chapter>> {
-    var lastLine = arrayOf(0)
+    val lastLine = arrayOf(0)
     val txtList = arrayListOf<Paragraph>()
     val chapterList = arrayListOf<Chapter>()
     val fb2 = FictionBook(File(path))
@@ -39,7 +39,7 @@ private fun readSection(section: Section, lastLine: Array<Int>): Pair<List<Parag
     val txtList = arrayListOf<Paragraph>()
     val chapterList = arrayListOf<Chapter>()
     val title = section.getTitleString(": ", ".")
-    if (!title.trim().isEmpty()) {
+    if (title.trim().isNotEmpty()) {
         txtList.add(Paragraph(title, ParagraphType.TITLE))
         Log.e("position ${lastLine[0]}", title)
         chapterList.add(Chapter(lastLine[0], title))

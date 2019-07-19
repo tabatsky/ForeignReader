@@ -41,10 +41,6 @@ class ContentsAdapter: RecyclerView.Adapter<ContentsAdapter.VH>() {
     }
 
     class VH(v: View): RecyclerView.ViewHolder(v) {
-        val tvChapter: TextView
-
-        init {
-            tvChapter = v as TextView
-        }
+        val tvChapter: TextView = v as TextView
     }
 }

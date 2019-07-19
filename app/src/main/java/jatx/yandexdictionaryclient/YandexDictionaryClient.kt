@@ -8,7 +8,7 @@ import java.io.IOException
 
 class YandexDictionaryClient private constructor() {
     companion object {
-        var INSTANCE: YandexDictionaryClient? = null
+        private var INSTANCE: YandexDictionaryClient? = null
 
         fun getInstance(): YandexDictionaryClient {
             if (INSTANCE==null) {
@@ -18,7 +18,7 @@ class YandexDictionaryClient private constructor() {
         }
     }
 
-    val apiKey = "dict.1.1.20190705T225237Z.93435935d40a4eaf.ef0ea911b950560b87dfb6f6a1fe884aa715ebea"
+    private val apiKey = "dict.1.1.20190705T225237Z.93435935d40a4eaf.ef0ea911b950560b87dfb6f6a1fe884aa715ebea"
 
     fun lookup(text: String, direction: String = "en-ru"): Pair<String, List<String>> {
         val resultList = arrayListOf<String>()
@@ -37,10 +37,10 @@ class YandexDictionaryClient private constructor() {
             response.body()?.string()?.apply {
                 val jsonResult = JSONObject(this)
                 val defJsonArray = jsonResult.getJSONArray("def")
-                for (i in 0..defJsonArray.length() - 1) {
+                for (i in 0 until defJsonArray.length() - 1) {
                     val defJsonObject = defJsonArray.getJSONObject(i)
                     val trJsonArray = defJsonObject.getJSONArray("tr")
-                    for (j in 0..trJsonArray.length() - 1) {
+                    for (j in 0 until trJsonArray.length() - 1) {
                         val trJsonObject = trJsonArray.getJSONObject(j)
                         val trText = trJsonObject.getString("text")
                         resultList.add(trText)

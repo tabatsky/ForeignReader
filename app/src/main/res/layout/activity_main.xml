@@ -54,7 +54,7 @@
 
         <TextView android:layout_width="match_parent"
                   android:layout_height="wrap_content"
-                  android:text="Contents"
+                  android:text="@string/contents"
                   android:textColor="@android:color/black"
                   android:textStyle="bold"
                   android:textSize="25sp"

@@ -1,7 +1,6 @@
 package jatx.foreignreader.views
 
 import android.content.Context
-import android.content.DialogInterface
 import android.support.v7.app.AlertDialog
 
 fun showWordDialog(context: Context, text: String, translation: String) {

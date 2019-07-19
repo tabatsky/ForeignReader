@@ -7,19 +7,19 @@ class WordScanner(val text: String) {
 
     private val extraSymbols = listOf('Ä', 'ä', 'Ö', 'ö', 'ẞ', 'ß', 'Ü', 'ü', '\'')
 
-    fun isLetter(ch: Char): Boolean {
+    private fun isLetter(ch: Char): Boolean {
         return (ch in 'A'..'Z') || (ch in 'a'..'z') || (ch in extraSymbols)
     }
 
-    fun scanNextWord(): Word? {
-        if (!isLetter(text.get(currentIndex))) {
+    private fun scanNextWord(): Word? {
+        if (!isLetter(text[currentIndex])) {
             currentIndex++
             return null
         } else {
             val sb = StringBuilder()
             val start = currentIndex
-            while (currentIndex < text.length && isLetter(text.get(currentIndex))) {
-                sb.append(text.get(currentIndex))
+            while (currentIndex < text.length && isLetter(text[currentIndex])) {
+                sb.append(text[currentIndex])
                 currentIndex++
             }
             val end = currentIndex

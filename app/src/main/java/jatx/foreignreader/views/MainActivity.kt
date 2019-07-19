@@ -21,11 +21,12 @@ import jatx.foreignreader.models.ParagraphType
 import jatx.foreignreader.utils.readFb2File
 import jatx.foreignreader.utils.readTxtFile
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.File
 
 class MainActivity : AppCompatActivity() {
-    val ENGLISH = 0
-    val DEUTSCH = 1
+    companion object {
+        const val ENGLISH = 0
+        const val DEUTSCH = 1
+    }
 
     private val paragraphList = arrayListOf<Paragraph>()
     private val chapterList = arrayListOf<Chapter>()
@@ -114,12 +115,9 @@ class MainActivity : AppCompatActivity() {
             ChooserDialog(this@MainActivity)
                 .withFilter(false, false, "txt", "fb2")
                 .withStartFile(Environment.getExternalStorageDirectory().absolutePath)
-                .withChosenListener(object : ChooserDialog.Result {
-                    override fun onChoosePath(path: String, pathFile: File) {
-                        //Toast.makeText(this@MainActivity, "FILE: $path", Toast.LENGTH_SHORT).show()
-                        loadFile(path)
-                    }
-                })
+                .withChosenListener { path, pathFile ->
+                    loadFile(path)
+                }
                 // to handle the back key pressed or clicked outside the dialog:
                 .withOnCancelListener { dialog ->
                     Log.e("CANCEL", "CANCEL")
@@ -170,7 +168,7 @@ class MainActivity : AppCompatActivity() {
         val sp = getSharedPreferences("prefs", 0)
         val editor = sp.edit()
         editor.putInt("position_$path", line)
-        editor.commit()
+        editor.apply()
     }
 
     private fun getPositionForFile(path: String): Int {
@@ -183,7 +181,7 @@ class MainActivity : AppCompatActivity() {
         val sp = getSharedPreferences("prefs", 0)
         val editor = sp.edit()
         editor.putString("currentPath", currentPath)
-        editor.commit()
+        editor.apply()
     }
 
     private fun loadCurrentPath() {
@@ -196,7 +194,7 @@ class MainActivity : AppCompatActivity() {
         val sp = getSharedPreferences("prefs", 0)
         val editor = sp.edit()
         editor.putInt("currentLang", currentLang)
-        editor.commit()
+        editor.apply()
     }
 
     private fun loadLanguage() {
@@ -208,8 +206,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun setLanguage(position: Int) {
         when (position) {
-            ENGLISH -> ParagraphsAdapter.DIRECTION = ParagraphsAdapter.DIRECTION_EN_RU
-            DEUTSCH -> ParagraphsAdapter.DIRECTION = ParagraphsAdapter.DIRECTION_DE_RU
+            ENGLISH -> ParagraphsAdapter.direction = ParagraphsAdapter.DIRECTION_EN_RU
+            DEUTSCH -> ParagraphsAdapter.direction = ParagraphsAdapter.DIRECTION_DE_RU
         }
     }
 }
