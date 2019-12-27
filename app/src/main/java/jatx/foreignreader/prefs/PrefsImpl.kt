@@ -1,6 +1,7 @@
 package jatx.foreignreader.prefs
 
 import android.content.Context
+import jatx.yandexdictionaryclient.TranslateDirection
 import javax.inject.Inject
 
 const val PREFS_NAME = "foreign_reader_prefs"
@@ -26,6 +27,9 @@ class PrefsImpl @Inject constructor(context: Context) : Prefs {
             editor.putString(KEY_CURRENT_PATH, value)
             editor.commit()
         }
+
+    override val translateDirection: TranslateDirection
+        get() = TranslateDirection.values()[language]
 
     override fun savePositionForFile(path: String, line: Int) {
         val editor = sp.edit()

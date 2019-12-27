@@ -26,7 +26,6 @@ class MainPresenter @Inject constructor(
     private val prefs: Prefs
 ) : MvpPresenter<MainView>() {
     private var publishSubject = PublishSubject.create<Word>()
-    private var translateDirection = TranslateDirection.EN_RU
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -41,10 +40,6 @@ class MainPresenter @Inject constructor(
     }
 
     fun onChangeLanguage(position: Int) {
-        when (position) {
-            0 -> translateDirection = TranslateDirection.EN_RU
-            1 -> translateDirection = TranslateDirection.DE_RU
-        }
         prefs.language = position
     }
 
@@ -96,7 +91,7 @@ class MainPresenter @Inject constructor(
         publishSubject
             .subscribeOn(Schedulers.io())
             .flatMap { word -> Observable
-                .fromCallable{ yandexDictionaryClient.lookup(word.text, translateDirection) }
+                .fromCallable{ yandexDictionaryClient.lookup(word.text, prefs.translateDirection) }
                 .subscribeOn(Schedulers.io())}
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ result ->
