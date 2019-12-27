@@ -31,7 +31,6 @@ class MainPresenter @Inject constructor(
         super.onFirstViewAttach()
         subscribeToPublishSubject()
         loadFileOrDefaultText()
-        onChangeLanguage(prefs.language)
         viewState.showSpinnerLanguageActualState(prefs.language)
     }
 
