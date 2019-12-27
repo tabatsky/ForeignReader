@@ -10,8 +10,8 @@
 /.idea/gradle.xml
 /.idea/sonarlint
 .DS_Store
-/build
-*/build
+/build/
+/*/build/
 /captures
 .externalNativeBuild
 .cxx
