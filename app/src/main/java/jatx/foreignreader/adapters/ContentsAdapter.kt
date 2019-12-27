@@ -47,10 +47,8 @@ class ContentsAdapter @Inject constructor(): RecyclerView.Adapter<ContentsAdapte
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         holder.tvChapter.text = chapters[position].title
-        holder.tvChapter.setTypeface(
-            null,
-            if (position == activeChapterPosition) Typeface.BOLD else Typeface.NORMAL
-        )
+        holder.tvChapter.typeface =
+            if (position == activeChapterPosition) Typeface.DEFAULT_BOLD else Typeface.DEFAULT
         holder.itemView.setOnClickListener {
             onChapterClickListener?.onChapterClick(chapters[position])
         }
