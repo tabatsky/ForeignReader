@@ -1,7 +1,7 @@
 package jatx.foreignreader.presentation
 
-import jatx.filereader.Chapter
-import jatx.filereader.Paragraph
+import jatx.bookreader.Chapter
+import jatx.bookreader.Paragraph
 import moxy.MvpView
 import moxy.viewstate.strategy.AddToEndSingleStrategy
 import moxy.viewstate.strategy.SkipStrategy

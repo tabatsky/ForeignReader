@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import jatx.foreignreader.R
-import jatx.filereader.Chapter
+import jatx.bookreader.Chapter
 import javax.inject.Inject
 
 class ContentsAdapter @Inject constructor(): RecyclerView.Adapter<ContentsAdapter.VH>() {

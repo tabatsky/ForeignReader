@@ -12,4 +12,6 @@
     <string name="open_file">Open File</string>
     <string name="contents">Contents</string>
     <string name="api_access_error">Ошибка доступа к API переводчика</string>
+    <string name="unsupported_file_format">Формат файла не поддерживается</string>
+    <string name="file_reading_error">Ошибка чтения файла</string>
 </resources>

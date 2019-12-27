@@ -1,4 +1,4 @@
-package jatx.filereader
+package jatx.bookreader
 
 data class Paragraph (
     val text: String,

@@ -11,12 +11,12 @@ const val API_KEY = "dict.1.1.20190705T225237Z.93435935d40a4eaf.ef0ea911b950560b
 const val API_URL = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup"
 
 class YandexDictionaryClientImpl @Inject constructor() : YandexDictionaryClient {
-    override fun lookup(text: String, direction: TranslateDirection): Pair<String, List<String>> {
+    override fun lookup(original: String, direction: TranslateDirection): DictionaryItem {
         val resultList = arrayListOf<String>()
         val urlBuilder = HttpUrl.parse(API_URL)?.newBuilder()
         urlBuilder?.addQueryParameter("key", API_KEY)
         urlBuilder?.addQueryParameter("lang", direction.direction)
-        urlBuilder?.addQueryParameter("text", text)
+        urlBuilder?.addQueryParameter("text", original)
         urlBuilder?.addQueryParameter("flags", "4")
         val url = urlBuilder?.build().toString()
         val request = Request.Builder().url(url).build()
@@ -39,7 +39,7 @@ class YandexDictionaryClientImpl @Inject constructor() : YandexDictionaryClient 
                     }
                 }
             }
-            return text to resultList
+            return DictionaryItem(original, resultList)
         }
     }
 }

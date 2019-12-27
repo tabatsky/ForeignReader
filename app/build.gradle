@@ -44,5 +44,5 @@ dependencies {
 
     implementation project(':clickablewordstextview')
     implementation project(':yandexdictionaryclient')
-    implementation project(':filereader')
+    implementation project(':bookreader')
 }

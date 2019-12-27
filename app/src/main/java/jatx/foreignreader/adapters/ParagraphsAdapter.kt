@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import jatx.clickablewordstextview.ClickableWordsTextView
 import jatx.clickablewordstextview.OnWordClickListener
 import jatx.foreignreader.R
-import jatx.filereader.Paragraph
-import jatx.filereader.ParagraphType
+import jatx.bookreader.Paragraph
+import jatx.bookreader.ParagraphType
 import javax.inject.Inject
 
 class ParagraphsAdapter @Inject constructor(): RecyclerView.Adapter<ParagraphsAdapter.VH>() {

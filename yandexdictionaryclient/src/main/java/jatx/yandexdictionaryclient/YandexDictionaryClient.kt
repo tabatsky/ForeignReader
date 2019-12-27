@@ -7,5 +7,5 @@ import org.json.JSONObject
 import java.io.IOException
 
 interface YandexDictionaryClient {
-    fun lookup(text: String, direction: TranslateDirection): Pair<String, List<String>>
+    fun lookup(original: String, direction: TranslateDirection): DictionaryItem
 }

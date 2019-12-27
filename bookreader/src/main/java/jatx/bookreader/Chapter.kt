@@ -1,4 +1,4 @@
-package jatx.filereader
+package jatx.bookreader
 
 data class Chapter (
     var number: Int = 0,

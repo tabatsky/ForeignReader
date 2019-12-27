@@ -2,8 +2,8 @@ package jatx.foreignreader.di
 
 import android.content.Context
 import dagger.*
-import jatx.filereader.FileReader
-import jatx.filereader.FileReaderImpl
+import jatx.bookreader.BookReader
+import jatx.bookreader.BookReaderImpl
 import jatx.foreignreader.adapters.ContentsAdapter
 import jatx.foreignreader.adapters.ParagraphsAdapter
 import jatx.foreignreader.prefs.Prefs
@@ -12,7 +12,6 @@ import jatx.foreignreader.presentation.MainPresenter
 import jatx.foreignreader.ui.MainActivity
 import jatx.yandexdictionaryclient.YandexDictionaryClient
 import jatx.yandexdictionaryclient.YandexDictionaryClientImpl
-import moxy.presenter.ProvidePresenter
 
 @Component(
     modules = [
@@ -37,7 +36,7 @@ interface AppModule {
     fun providePrefs(prefsImpl: PrefsImpl): Prefs
 
     @Binds
-    fun provideFileReader(fileReaderImpl: FileReaderImpl): FileReader
+    fun provideFileReader(fileReaderImpl: BookReaderImpl): BookReader
 
     @Binds
     fun provideYandexDictionaryClient(yandexDictionaryClientImpl: YandexDictionaryClientImpl): YandexDictionaryClient
@@ -58,9 +57,9 @@ class PresenterModule {
     fun provideMainPresenter(
         context: Context,
         yandexDictionaryClient: YandexDictionaryClient,
-        fileReader: FileReader,
+        bookReader: BookReader,
         prefs: Prefs
-    ) = MainPresenter(context, yandexDictionaryClient, fileReader, prefs)
+    ) = MainPresenter(context, yandexDictionaryClient, bookReader, prefs)
 }
 
 interface AppDeps {

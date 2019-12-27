@@ -6,23 +6,23 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.PublishSubject
 import jatx.clickablewordstextview.Word
-import jatx.filereader.FileReader
-import jatx.filereader.Paragraph
-import jatx.filereader.ParagraphType
+import jatx.bookreader.BookReader
+import jatx.bookreader.Paragraph
+import jatx.bookreader.ParagraphType
 import jatx.foreignreader.R
 import jatx.foreignreader.prefs.Prefs
-import jatx.yandexdictionaryclient.TranslateDirection
 import jatx.yandexdictionaryclient.YandexDictionaryClient
 import moxy.InjectViewState
 import moxy.MvpPresenter
 import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @InjectViewState
 class MainPresenter @Inject constructor(
     private val context: Context,
     private val yandexDictionaryClient: YandexDictionaryClient,
-    private val fileReader: FileReader,
+    private val bookReader: BookReader,
     private val prefs: Prefs
 ) : MvpPresenter<MainView>() {
     private var publishSubject = PublishSubject.create<Word>()
@@ -47,17 +47,29 @@ class MainPresenter @Inject constructor(
     }
 
     fun loadFile(path: String) {
-        prefs.currentPath = path
-        if (path.endsWith(".txt")) {
-            viewState.setParagraphs(fileReader.readTxtFile(path))
-            viewState.setChapters(listOf())
-        } else if (path.endsWith(".fb2")) {
-            val result = fileReader.readFb2File(path)
-            viewState.setParagraphs(result.first)
-            viewState.setChapters(result.second)
+        try {
+            prefs.currentPath = path
+            val book = if (path.endsWith(".txt")) {
+                bookReader.readTxtFile(path)
+            } else if (path.endsWith(".fb2")) {
+                bookReader.readFb2File(path)
+            } else if (path.endsWith(".fb2.zip")) {
+                bookReader.readFb2ZipFile(path)
+            } else {
+                viewState.showToast(context.getString(R.string.unsupported_file_format))
+                null
+            }
+            book?.apply {
+                viewState.setParagraphs(paragraphs)
+                viewState.setChapters(chapters)
+            }
+            viewState.scrollToActualPosition(prefs.getPositionForFile(path))
+            viewState.updateActiveChapter(prefs.getPositionForFile(path))
+        } catch (t: Throwable) {
+            t.printStackTrace()
+            viewState.showToast(context.getString(R.string.file_reading_error))
+            loadDefaultText()
         }
-        viewState.scrollToActualPosition(prefs.getPositionForFile(path))
-        viewState.updateActiveChapter(prefs.getPositionForFile(path))
     }
 
     fun onActiveParagraphChanged(paragraphPosition: Int) {
@@ -66,20 +78,19 @@ class MainPresenter @Inject constructor(
     }
 
     private fun loadFileOrDefaultText() {
-        try {
-            loadFile(prefs.currentPath!!)
-        } catch (t: Throwable) {
-            t.printStackTrace()
-            val paragraphArrayList = arrayListOf<Paragraph>()
-            val sc = Scanner(context.resources.openRawResource(R.raw.sample))
-            while (sc.hasNextLine()) {
-                val line = Paragraph(sc.nextLine(), ParagraphType.TEXT)
-                paragraphArrayList.add(line)
-            }
-            sc.close()
-            viewState.setParagraphs(paragraphArrayList)
-            viewState.setChapters(listOf())
+        prefs.currentPath?.apply { loadFile(this) } ?: loadDefaultText()
+    }
+
+    private fun loadDefaultText() {
+        val paragraphs = arrayListOf<Paragraph>()
+        val sc = Scanner(context.resources.openRawResource(R.raw.sample))
+        while (sc.hasNextLine()) {
+            val paragraph = Paragraph(sc.nextLine(), ParagraphType.TEXT)
+            paragraphs.add(paragraph)
         }
+        sc.close()
+        viewState.setParagraphs(paragraphs)
+        viewState.setChapters(listOf())
     }
 
     private fun subscribeToPublishSubject() {
@@ -88,6 +99,7 @@ class MainPresenter @Inject constructor(
         }
         publishSubject = PublishSubject.create<Word>()
         publishSubject
+            .debounce(1000, TimeUnit.MILLISECONDS)
             .subscribeOn(Schedulers.io())
             .flatMap { word -> Observable
                 .fromCallable{ yandexDictionaryClient.lookup(word.text, prefs.translateDirection) }
@@ -95,7 +107,7 @@ class MainPresenter @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ result ->
                 println(result)
-                viewState.showTranslation(result.first, "${result.second}")
+                viewState.showTranslation(result.original, "${result.translations}")
             }, { error ->
                 error.printStackTrace()
                 viewState.showToast(context.getString(R.string.api_access_error))

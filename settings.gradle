@@ -1,1 +1,1 @@
-include ':app', ':clickablewordstextview', ':yandexdictionaryclient', ':filereader', ':fb2parser'
+include ':app', ':clickablewordstextview', ':yandexdictionaryclient', ':bookreader', ':fb2parser'

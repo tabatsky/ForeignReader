@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.Lazy
 import jatx.clickablewordstextview.onWordClickListener
-import jatx.filereader.*
+import jatx.bookreader.*
 import jatx.foreignreader.App
 import jatx.foreignreader.R
 import jatx.foreignreader.adapters.ContentsAdapter
@@ -76,7 +76,7 @@ class MainActivity : MvpAppCompatActivity(), MainView {
 
     override fun showFileSelectDialog() {
         ChooserDialog(this)
-            .withFilter(false, false, "txt", "fb2")
+            .withFilter(false, false, "txt", "fb2", "zip")
             .withStartFile(Environment.getExternalStorageDirectory().absolutePath)
             .withChosenListener { path, _ ->
                 presenter.loadFile(path)
