@@ -1,0 +1,37 @@
+-- Merging decision tree log ---
+manifest
+ADDED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml:1:1-2:49
+INJECTED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml:1:1-2:49
+INJECTED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml:1:1-2:49
+INJECTED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml:1:1-2:49
+INJECTED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml:1:1-2:49
+INJECTED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml:1:1-2:49
+INJECTED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml:1:1-2:49
+	package
+		ADDED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml:2:9-46
+		INJECTED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml
+		INJECTED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml
+		ADDED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml:1:1-2:49
+		INJECTED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml
+		ADDED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml:1:1-2:49
+		INJECTED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml:1:11-69
+uses-sdk
+INJECTED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml
+INJECTED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml
+INJECTED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml
+INJECTED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml
+		ADDED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml
+		INJECTED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml
+		ADDED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml
+		INJECTED from J:\Studio\ForeignReader\yandexdictionaryclient\src\main\AndroidManifest.xml

@@ -11,4 +11,5 @@
 
     <string name="open_file">Open File</string>
     <string name="contents">Contents</string>
+    <string name="api_access_error">Ошибка доступа к API переводчика</string>
 </resources>
