@@ -16,10 +16,10 @@ import jatx.foreignreader.R
 import jatx.foreignreader.adapters.ContentsAdapter
 import jatx.foreignreader.adapters.ParagraphsAdapter
 import jatx.foreignreader.adapters.onChapterClickListener
+import jatx.foreignreader.databinding.ActivityMainBinding
 import jatx.foreignreader.extensions.setOnItemSelectedListener
 import jatx.foreignreader.presentation.MainPresenter
 import jatx.foreignreader.presentation.MainView
-import kotlinx.android.synthetic.main.activity_main.*
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
@@ -38,16 +38,23 @@ class MainActivity : MvpAppCompatActivity(), MainView {
     private val rvParagraphsLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
     private val rvContentsLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
+    private lateinit var activityMainBinding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         App.appComponent?.inject(this)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+
+        activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(activityMainBinding.root)
 
         initDrawer()
         initRVParagraphs()
         initRVContents()
-        spinnerLanguage.setOnItemSelectedListener { presenter.onChangeLanguage(it) }
-        btnOpenFile.setOnClickListener { presenter.onBtnOpenFileClick() }
+
+        with(activityMainBinding) {
+            spinnerLanguage.setOnItemSelectedListener { presenter.onChangeLanguage(it) }
+            btnOpenFile.setOnClickListener { presenter.onBtnOpenFileClick() }
+        }
     }
 
     override fun showTranslation(word: String, translation: String) {
@@ -71,7 +78,7 @@ class MainActivity : MvpAppCompatActivity(), MainView {
     }
 
     override fun showSpinnerLanguageActualState(position: Int) {
-        spinnerLanguage.setSelection(position)
+        activityMainBinding.spinnerLanguage.setSelection(position)
     }
 
     override fun showFileSelectDialog() {
@@ -94,42 +101,50 @@ class MainActivity : MvpAppCompatActivity(), MainView {
     }
 
     private fun initDrawer() {
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        drawerToggle = ActionBarDrawerToggle(this, drawerLayout, toolbar,
-            R.string.open,
-            R.string.close
-        )
-        drawerToggle.syncState()
-        drawerLayout.addDrawerListener(drawerToggle)
+        with(activityMainBinding) {
+            setSupportActionBar(toolbar)
+            supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            drawerToggle = ActionBarDrawerToggle(
+                this@MainActivity, drawerLayout, toolbar,
+                R.string.open,
+                R.string.close
+            )
+            drawerToggle.syncState()
+            drawerLayout.addDrawerListener(drawerToggle)
+        }
     }
 
     private fun initRVParagraphs() {
-        rvParagraphs.apply {
-            this.layoutManager = rvParagraphsLayoutManager
-            this.adapter = rvParagraphsAdapter
-            this.addOnScrollListener(object: RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    val paragraphPosition = rvParagraphsLayoutManager.findFirstVisibleItemPosition()
-                    presenter.onActiveParagraphChanged(paragraphPosition)
-                }
-            })
+        with(activityMainBinding) {
+            rvParagraphs.apply {
+                this.layoutManager = rvParagraphsLayoutManager
+                this.adapter = rvParagraphsAdapter
+                this.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+                        val paragraphPosition =
+                            rvParagraphsLayoutManager.findFirstVisibleItemPosition()
+                        presenter.onActiveParagraphChanged(paragraphPosition)
+                    }
+                })
+            }
         }
 
         rvParagraphsAdapter.onWordClickListener = onWordClickListener { presenter.onWordClick(it) }
     }
 
     private fun initRVContents() {
-        rvContents.apply {
-            this.layoutManager = rvContentsLayoutManager
-            this.adapter = rvContentsAdapter
-        }
+        with(activityMainBinding) {
+            rvContents.apply {
+                this.layoutManager = rvContentsLayoutManager
+                this.adapter = rvContentsAdapter
+            }
 
-        rvContentsAdapter.onChapterClickListener = onChapterClickListener {
-            rvContentsAdapter.activeChapterPosition = it.number
-            rvParagraphsLayoutManager.scrollToPositionWithOffset(it.position, 0)
-            drawerLayout.closeDrawer(GravityCompat.START)
+            rvContentsAdapter.onChapterClickListener = onChapterClickListener {
+                rvContentsAdapter.activeChapterPosition = it.number
+                rvParagraphsLayoutManager.scrollToPositionWithOffset(it.position, 0)
+                drawerLayout.closeDrawer(GravityCompat.START)
+            }
         }
     }
 }

@@ -1,26 +1,5 @@
 apply plugin: 'java-library'
-apply plugin: 'maven-publish'
 
-publishing {
-    repositories {
-        mavenLocal()
-    }
-
-    publications {
-        maven(MavenPublication) {
-            groupId "jatx"
-            artifactId "fb2parser"
-            version "1.0"
-            artifact("libs/fb2parser.jar")
-            pom.withXml {
-                def dependencies = asNode().appendNode("dependencies")
-                configurations.compile.allDependencies.each { dep ->
-                    def depNode = dependencies.appendNode("dependency")
-                    depNode.appendNode("groupId", dep.group)
-                    depNode.appendNode("artifactId", dep.name)
-                    depNode.appendNode("version", dep.version)
-                }
-            }
-        }
-    }
+dependencies {
+    api files('libs/fb2parser.jar')
 }
